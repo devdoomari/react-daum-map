@@ -1,0 +1,57 @@
+{
+  "name": "react-daum-map",
+  "version": "0.0.1",
+  "description": "React wrapper for daum map",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "$(npm bin)/webpack --config examples/webpack_config/build.js --bail -p",
+    "clean": "rm -r examples/dist",
+    "watch_examples": "$(npm bin)/webpack --watch --config examples/webpack_config/build.js --bail -p",
+    "dev": "$(npm bin)/webpack-dev-server --config examples/webpack_config/config.js --history-api-fallback"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devdoomari/react-daum-map.git"
+  },
+  "keywords": [
+    "react",
+    "daum",
+    "map"
+  ],
+  "author": "devdoomari@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devdoomari/react-daum-map/issues"
+  },
+  "homepage": "https://github.com/devdoomari/react-daum-map#readme",
+  "dependencies": {
+    "getscript-promise": "0.0.1",
+    "jquery": "^2.1.4",
+    "lodash": "^3.10.1",
+    "node-uuid": "^1.4.7",
+    "q": "^1.4.1",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.1.2",
+    "babel-core": "^5.8.29",
+    "babel-loader": "^5.4",
+    "babel-runtime": "^5.8.29",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^2.0.0",
+    "eslint-plugin-react": "^3.11.3",
+    "extract-text-webpack-plugin": "^0.9.1",
+    "html-webpack-plugin": "^1.7.0",
+    "ng-annotate-loader": "0.0.10",
+    "nginject-loader": "^2.0.0",
+    "raw-loader": "^0.5.1",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "react-leaflet": "^0.9.0",
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0",
+    "webpack-hot-middleware": "^2.6.0"
+  }
+}
