@@ -16,7 +16,8 @@ export default React.createClass({
     position: React.PropTypes.array.isRequired,
     onMove: React.PropTypes.func,
     style: React.PropTypes.object,
-    baseMapType: React.PropTypes.oneOf(_.keys(DAUM_BASE_MAP_TYPES).push(undefined)),
+    baseMapType: React.PropTypes.oneOf([..._.keys(DAUM_BASE_MAP_TYPES), undefined]),
+    overlayMapTypes: React.PropTypes.array,
     zoomLevel: React.PropTypes.number,
   },
   getDefaultProps() {

@@ -19,14 +19,15 @@ const DaumRoadViewDemo = React.createClass({
   getInitialState() {
     return {
       position: [37.566826, 126.9786567],
+      reportedPosition: [null, null],
       note1Position: [37.566826, 126.97865],
       zoomLevel: 3,
       baseMapType: DAUM_BASE_MAP_TYPES.ROADMAP,
     };
   },
 
-  onMove(newPosition) {
-    console.log(`new Position: ${newPosition}`);
+  onMove(reportedPosition) {
+    this.setState({ reportedPosition });
   },
   onSetBaseMapType(event) {
     const baseMapType = event.target.value;
@@ -57,13 +58,16 @@ const DaumRoadViewDemo = React.createClass({
           </Col>
         </Row>
         <Row>
-          <Button onClick={this.movePositionUp}> up! </Button>
-          <Button onClick={this.zoomOut}> Zoom Out! </Button>
-          <Input type="select" label="BaseMapType" onChange={this.onSetBaseMapType}>
-            <option value={DAUM_BASE_MAP_TYPES.ROADMAP}> ROADMAP </option>
-            <option value={DAUM_BASE_MAP_TYPES.SKYVIEW}> SKYVIEW </option>
-            <option value={DAUM_BASE_MAP_TYPES.HYBRID}> HYBRID </option>
-          </Input>
+          <Col md={12}>
+            <Button onClick={this.movePositionUp}> up! </Button>
+            <Button onClick={this.zoomOut}> Zoom Out! </Button>
+            <Input type="select" label="BaseMapType" onChange={this.onSetBaseMapType}>
+              <option value={DAUM_BASE_MAP_TYPES.ROADMAP}> ROADMAP </option>
+              <option value={DAUM_BASE_MAP_TYPES.SKYVIEW}> SKYVIEW </option>
+              <option value={DAUM_BASE_MAP_TYPES.HYBRID}> HYBRID </option>
+            </Input>
+            <h1>{`${this.state.reportedPosition[0]} : ${this.state.reportedPosition[1]}`}</h1>
+          </Col>
         </Row>
       </div>
     );
