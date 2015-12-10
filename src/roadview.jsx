@@ -13,6 +13,7 @@ export default React.createClass({
     daumAPILoadFailed: React.PropTypes.node,
     position: React.PropTypes.array.isRequired,
     onChangePosition: React.PropTypes.func,
+    style: React.PropTypes.object,
   },
   getDefaultProps() {
     return {
@@ -39,10 +40,17 @@ export default React.createClass({
     daumAPIWrapper.loadPromise.then(()=> {
       ReactDOM.unmountComponentAtNode(containerDiv);
       const daumMapAPI = daumAPIWrapper.getDaumMapAPI();
+      const roadview = new daumMapAPI.Roadview(containerDiv);
+      const roadviewClient = new daumMapAPI.RoadviewClient();
+      const daumMapPosition = new daumMapAPI.LatLng(...this.props.position);
+      roadviewClient.getNearestPanoId(daumMapPosition, 50, function(panoId) {
+        roadview.setPanoId(panoId, daumMapPosition);
+      });
       this.setState({
         daumMapAPI,
-        roadview: new daumMapAPI.Roadview(containerDiv),
-        roadviewClient: new daumMapAPI.RoadviewClient(),
+        roadview,
+        roadviewClient,
+        daumMapPosition,
       });
     })
     .catch((rejection)=> {
@@ -56,7 +64,7 @@ export default React.createClass({
   },
   render() {
     return (
-      <div ref="containerDiv"></div>
+      <div style={this.props.style} ref="containerDiv"></div>
     );
   },
 });

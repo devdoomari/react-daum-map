@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {
-  daumAPIWrapper,
   DaumRoadView,
 } from '../../src/index';
 import {
@@ -17,7 +16,7 @@ const DaumRoadViewDemo = React.createClass({
   },
   render() {
     return (
-      <DaumRoadView position={this.state.position}
+      <DaumRoadView style={{width: 400, height: 400}} position={this.state.position}
                     APIKey={APIKEY}>
         <div position={this.state.note1Position}> Some Notes! </div>
       </DaumRoadView>
