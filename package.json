@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/devdoomari/react-daum-map#readme",
   "dependencies": {
+    "keymirror": "^0.1.1",
     "lodash": "^3.10.1",
     "node-uuid": "^1.4.7",
     "postscribe": "^1.4.0",

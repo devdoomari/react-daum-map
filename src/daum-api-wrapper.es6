@@ -27,6 +27,9 @@ function load(APIKey) {
 const loadPromise = deferred.promise;
 
 function getDaumMapAPI() {
+  if (!window.daum.maps) {
+    throw new Error('Daum Map not loaded yet!');
+  }
   return window.daum.maps;
 }
 

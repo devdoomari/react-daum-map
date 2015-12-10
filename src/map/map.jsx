@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import daumAPIWrapper from '../daum-api-wrapper';
+import DAUM_BASE_MAP_TYPES, {
+  convertToDaumBaseMapType,
+} from './constants/base-map-types';
 import Promise from 'q';
 import _ from 'lodash';
-
 
 export default React.createClass({
   displayName: 'ReactDaumMap::map',
@@ -14,6 +16,8 @@ export default React.createClass({
     position: React.PropTypes.array.isRequired,
     onMove: React.PropTypes.func,
     style: React.PropTypes.object,
+    baseMapType: React.PropTypes.oneOf(_.keys(DAUM_BASE_MAP_TYPES).push(undefined)),
+    zoomLevel: React.PropTypes.number,
   },
   getDefaultProps() {
     return {
@@ -24,11 +28,6 @@ export default React.createClass({
     };
   },
   /* Daum Map API specific objects are stored in this.daumMap */
-  onMove() {
-    const center = this.daumMap.map.getCenter();
-    const coords = daumAPIWrapper.daumMapCoordsToArrayCoords(center);
-    this.props.onMove(daumAPIWrapper.daumMapCoordsToArrayCoords(center));
-  },
   componentWillMount() {
     if (this.props.APIKey) {
       daumAPIWrapper.load(this.props.APIKey);
@@ -53,6 +52,7 @@ export default React.createClass({
       this.daumMap.options = {
         center: position,
         level: 3,
+        mapTypeId: convertToDaumBaseMapType(this.props.baseMapType),
       };
       this.daumMap.map = new this.daumMap.API.Map(containerDiv, this.daumMap.options);
       this.daumMap.position = daumAPIWrapper.daumMapCoordsToArrayCoords(
@@ -83,10 +83,21 @@ export default React.createClass({
         this.daumMap.map.setLevel(nextProps.zoomLevel);
       });
     }
+    const baseMapTypeChanged = !_.isEqual(this.props.baseMapType, nextProps.baseMapType);
+    if (baseMapTypeChanged) {
+      this.daumMap.initPromise.then(()=> {
+        this.daumMap.map.setMapTypeId(convertToDaumBaseMapType(nextProps.baseMapType));
+      });
+    }
   },
   shouldComponentUpdate() {
     // don't update react-dom.
     return false;
+  },
+  onMove() {
+    const center = this.daumMap.map.getCenter();
+    const coords = daumAPIWrapper.daumMapCoordsToArrayCoords(center);
+    this.props.onMove(coords);
   },
   render() {
     return (

@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import daumAPIWrapper from './daum-api-wrapper';
-import uuid from 'node-uuid';
-import _ from 'lodash';
-// const daumAPIWrapper = require('./daum-api-wrapper');
 
 export default React.createClass({
   displayName: 'ReactDaumMap::roadview',
@@ -43,7 +40,7 @@ export default React.createClass({
       const roadview = new daumMapAPI.Roadview(containerDiv);
       const roadviewClient = new daumMapAPI.RoadviewClient();
       const daumMapPosition = new daumMapAPI.LatLng(...this.props.position);
-      roadviewClient.getNearestPanoId(daumMapPosition, 50, function(panoId) {
+      roadviewClient.getNearestPanoId(daumMapPosition, 50, (panoId)=> {
         roadview.setPanoId(panoId, daumMapPosition);
       });
       this.setState({
@@ -59,7 +56,7 @@ export default React.createClass({
       ReactDOM.render(this.props.daumAPILoadFailed, containerDiv);
     });
   },
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate() {
     return false;
   },
   render() {
