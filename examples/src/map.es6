@@ -17,6 +17,7 @@ const DaumRoadViewDemo = React.createClass({
     return {
       position: [37.566826, 126.9786567],
       note1Position: [37.566826, 126.97865],
+      zoomLevel: 3,
     };
   },
   movePositionUp() {
@@ -26,19 +27,27 @@ const DaumRoadViewDemo = React.createClass({
     console.log(position);
     this.setState({ position });
   },
+  zoomOut() {
+    const zoomLevel = this.state.zoomLevel + 1;
+    this.setState({ zoomLevel });
+  },
   render() {
     return (
       <div>
         <Row>
           <Col md={12}>
-            <DaumMapView style={{ width: 400, height: 400 }} position={this.state.position}
-                          APIKey={APIKEY}>
+            <DaumMapView style={{ width: 400, height: 400 }}
+                         position={this.state.position}
+                         APIKey={APIKEY}
+                         zoomLevel={this.state.zoomLevel}>
               <div position={this.state.note1Position}> Some Notes! </div>
             </DaumMapView>
           </Col>
         </Row>
         <Row>
           <Button onClick={this.movePositionUp}> up! </Button>
+
+          <Button onClick={this.zoomOut}> Zoom Out! </Button>
         </Row>
       </div>
     );

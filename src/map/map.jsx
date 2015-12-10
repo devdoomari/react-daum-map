@@ -65,9 +65,15 @@ export default React.createClass({
         this.daumMap.map.panTo(new this.daumMap.API.LatLng(...nextProps.position));
       });
     }
+    const zoomLevelChanged = !_.isEqual(this.props.zoomLevel, nextProps.zoomLevel);
+    if (zoomLevelChanged) {
+      this.daumMap.initPromise.then(()=> {
+        this.daumMap.map.setLevel(nextProps.zoomLevel);
+      });
+    }
   },
   shouldComponentUpdate() {
-    // don't update react-dom ever.
+    // don't update react-dom.
     return false;
   },
   render() {
