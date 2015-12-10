@@ -31,12 +31,13 @@ module.exports = function makeWebpackConfig (options) {
    * Karma will set this when it's a test build
    */
   if (TEST) {
-    config.entry = {}
+    config.entry = {};
   } else {
     config.entry = {
       // app: './src/index.es6'
       'roadview': './examples/src/roadview.es6',
-    }
+      'map': './examples/src/map.es6',
+    };
   }
 
   /**
@@ -201,6 +202,14 @@ module.exports = function makeWebpackConfig (options) {
         filename: 'roadview.html',
       })
     )
+    config.plugins.push(
+      new HtmlWebpackPlugin({
+        template: './examples/src/map.html',
+        inject: 'body',
+        chunks: ['map'],
+        filename: 'map.html',
+      })
+    )
   }
 
   // Add build specific plugins
@@ -212,7 +221,7 @@ module.exports = function makeWebpackConfig (options) {
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
       // Dedupe modules in the output
-      new webpack.optimize.DedupePlugin()//,
+      new webpack.optimize.DedupePlugin(),
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
       // Minify all javascript, switch loaders to minimizing mode

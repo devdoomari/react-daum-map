@@ -13,7 +13,7 @@ export default React.createClass({
     daumAPILoadFailed: React.PropTypes.node,
     position: React.PropTypes.array.isRequired,
     onChangePosition: React.PropTypes.func,
-    level: React.PropTypes.number.isRequired,
+    style: React.PropTypes.object,
   },
   getDefaultProps() {
     return {
@@ -28,8 +28,8 @@ export default React.createClass({
     }
     return {
       initialized: false,
-      roadviewClient: null,
-      roadview: null,
+      daumMap: null,
+      daumMapOptions: {},
       daumMapAPI: null,
       daumMapPosition: null,
     };
@@ -37,16 +37,24 @@ export default React.createClass({
   componentDidMount() {
     const containerDiv = ReactDOM.findDOMNode(this.refs.containerDiv);
     ReactDOM.render(this.props.daumAPILoading, containerDiv);
-    this.state.daumAPILoadPromise.then(()=> {
+    daumAPIWrapper.loadPromise.then(()=> {
       ReactDOM.unmountComponentAtNode(containerDiv);
       const daumMapAPI = daumAPIWrapper.getDaumMapAPI();
+      const daumMapPosition = new daumMapAPI.LatLng(...this.props.position);
+      const daumMapOptions = {
+        center: daumMapPosition,
+        level: 3,
+      };
+      const daumMap = new daumMapAPI.Map(containerDiv, daumMapOptions);
       this.setState({
         daumMapAPI,
-        roadview: new daumMapAPI.Roadview(containerDiv),
-        roadviewClient: new daumMapAPI.RoadviewClient(),
+        daumMap,
+        daumMapOptions,
+        daumMapPosition,
       });
     })
     .catch((rejection)=> {
+      console.error(rejection);
       ReactDOM.unmountComponentAtNode(containerDiv);
       ReactDOM.render(this.props.daumAPILoadFailed, containerDiv);
     });
@@ -55,10 +63,8 @@ export default React.createClass({
     return false;
   },
   render() {
-    //const daumMapAPI = daumAPIWrapper.getDaumMapAPI();
-    //const position = daumMapAPI.LatLng(this.props.position);
     return (
-      <div ref="containerDiv"></div>
+      <div style={this.props.style} ref="containerDiv"></div>
     );
   },
 });
