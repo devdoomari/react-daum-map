@@ -31,6 +31,9 @@ const DaumRoadViewDemo = React.createClass({
     const zoomLevel = this.state.zoomLevel + 1;
     this.setState({ zoomLevel });
   },
+  onMove(newPosition) {
+    console.log(`new Position: ${newPosition}`);
+  },
   render() {
     return (
       <div>
@@ -39,7 +42,8 @@ const DaumRoadViewDemo = React.createClass({
             <DaumMapView style={{ width: 400, height: 400 }}
                          position={this.state.position}
                          APIKey={APIKEY}
-                         zoomLevel={this.state.zoomLevel}>
+                         zoomLevel={this.state.zoomLevel}
+                         onMove={this.onMove}>
               <div position={this.state.note1Position}> Some Notes! </div>
             </DaumMapView>
           </Col>

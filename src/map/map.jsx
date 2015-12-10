@@ -12,7 +12,7 @@ export default React.createClass({
     daumAPILoading: React.PropTypes.node,
     daumAPILoadFailed: React.PropTypes.node,
     position: React.PropTypes.array.isRequired,
-    onChangePosition: React.PropTypes.func,
+    onMove: React.PropTypes.func,
     style: React.PropTypes.object,
   },
   getDefaultProps() {
@@ -20,10 +20,15 @@ export default React.createClass({
       apiKey: null,
       daumAPILoading: <h1> 다음 지도 API를 로드하는 중입니다. </h1>,
       daumAPILoadFailed: <h1> 다음 지도 API 로드를 실패하였습니다. </h1>,
+      onMove: ()=> {},
     };
   },
   /* Daum Map API specific objects are stored in this.daumMap */
-
+  onMove() {
+    const center = this.daumMap.map.getCenter();
+    const coords = daumAPIWrapper.daumMapCoordsToArrayCoords(center);
+    this.props.onMove(daumAPIWrapper.daumMapCoordsToArrayCoords(center));
+  },
   componentWillMount() {
     if (this.props.APIKey) {
       daumAPIWrapper.load(this.props.APIKey);
@@ -35,6 +40,7 @@ export default React.createClass({
       options: {},
       API: null,
       initPromise, initDeferred,
+      position: null,
     };
   },
   componentDidMount() {
@@ -49,6 +55,10 @@ export default React.createClass({
         level: 3,
       };
       this.daumMap.map = new this.daumMap.API.Map(containerDiv, this.daumMap.options);
+      this.daumMap.position = daumAPIWrapper.daumMapCoordsToArrayCoords(
+        this.daumMap.map.getCenter());
+      this.daumMap.API.event.addListener(
+        this.daumMap.map, 'center_changed', this.onMove);
       this.daumMap.initDeferred.resolve();
     })
     .catch((rejection)=> {
@@ -62,7 +72,9 @@ export default React.createClass({
     const positionChanged = !_.isEqual(this.props.position, nextProps.position);
     if (positionChanged) {
       this.daumMap.initPromise.then(()=> {
-        this.daumMap.map.panTo(new this.daumMap.API.LatLng(...nextProps.position));
+        this.daumMap.map.setCenter(new this.daumMap.API.LatLng(...nextProps.position));
+        this.daumMap.position = daumAPIWrapper.daumMapCoordsToArrayCoords(
+          this.daumMap.map.getCenter());
       });
     }
     const zoomLevelChanged = !_.isEqual(this.props.zoomLevel, nextProps.zoomLevel);
