@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import daumAPIWrapper from './daum-api-wrapper';
 import uuid from 'node-uuid';
 import _ from 'lodash';
@@ -25,27 +26,28 @@ export default React.createClass({
       daumAPIWrapper.load(this.props.APIKey);
     }
     return {
-      daumAPILoadPromise: daumAPIWrapper.loadPromise,
       initialized: false,
       roadviewClient: null,
-      roadViewContainer: null,
       roadview: null,
-      containerDivId: uuid.v4(),
+      daumMapAPI: null,
+      daumMapPosition: null,
     };
   },
-
-  componentWillMount() {
-    if (!this.state.daumAPILoadPromise.isFulfilled()) {
-      this.state.daumAPILoadPromise.then(()=> {
-        this.setState({ daumAPILoadPromise: this.state.daumAPILoadPromise });
-      });
-    }
-  },
   componentDidMount() {
-    debugger;
-    this.state.daumAPILoadPromise.then(()=> {
-      const self = this;
-      debugger;
+    const containerDiv = ReactDOM.findDOMNode(this.refs.containerDiv);
+    ReactDOM.render(this.props.daumAPILoading, containerDiv);
+    daumAPIWrapper.loadPromise.then(()=> {
+      ReactDOM.unmountComponentAtNode(containerDiv);
+      const daumMapAPI = daumAPIWrapper.getDaumMapAPI();
+      this.setState({
+        daumMapAPI,
+        roadview: new daumMapAPI.Roadview(containerDiv),
+        roadviewClient: new daumMapAPI.RoadviewClient(),
+      });
+    })
+    .catch((rejection)=> {
+      ReactDOM.unmountComponentAtNode(containerDiv);
+      ReactDOM.render(this.props.daumAPILoadFailed, containerDiv);
     });
   },
   shouldComponentUpdate(nextProps, nextState) {
