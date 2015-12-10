@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import daumAPIWrapper from './daum-api-wrapper';
-import uuid from 'node-uuid';
+import daumAPIWrapper from '../daum-api-wrapper';
+import Promise from 'q';
 import _ from 'lodash';
-// const daumAPIWrapper = require('./daum-api-wrapper');
+
 
 export default React.createClass({
   displayName: 'ReactDaumMap::map',
@@ -22,16 +22,19 @@ export default React.createClass({
       daumAPILoadFailed: <h1> 다음 지도 API 로드를 실패하였습니다. </h1>,
     };
   },
-  getInitialState() {
+  /* Daum Map API specific objects are stored in this.daumMap */
+
+  componentWillMount() {
     if (this.props.APIKey) {
       daumAPIWrapper.load(this.props.APIKey);
     }
-    return {
-      initialized: false,
-      daumMap: null,
-      daumMapOptions: {},
-      daumMapAPI: null,
-      daumMapPosition: null,
+    const initDeferred = Promise.defer();
+    const initPromise = initDeferred.promise;
+    this.daumMap = {
+      map: null,
+      options: {},
+      API: null,
+      initPromise, initDeferred,
     };
   },
   componentDidMount() {
@@ -39,27 +42,32 @@ export default React.createClass({
     ReactDOM.render(this.props.daumAPILoading, containerDiv);
     daumAPIWrapper.loadPromise.then(()=> {
       ReactDOM.unmountComponentAtNode(containerDiv);
-      const daumMapAPI = daumAPIWrapper.getDaumMapAPI();
-      const daumMapPosition = new daumMapAPI.LatLng(...this.props.position);
-      const daumMapOptions = {
-        center: daumMapPosition,
+      this.daumMap.API = daumAPIWrapper.getDaumMapAPI();
+      const position = new this.daumMap.API.LatLng(...this.props.position);
+      this.daumMap.options = {
+        center: position,
         level: 3,
       };
-      const daumMap = new daumMapAPI.Map(containerDiv, daumMapOptions);
-      this.setState({
-        daumMapAPI,
-        daumMap,
-        daumMapOptions,
-        daumMapPosition,
-      });
+      this.daumMap.map = new this.daumMap.API.Map(containerDiv, this.daumMap.options);
+      this.daumMap.initDeferred.resolve();
     })
     .catch((rejection)=> {
       console.error(rejection);
       ReactDOM.unmountComponentAtNode(containerDiv);
       ReactDOM.render(this.props.daumAPILoadFailed, containerDiv);
+      this.daumMap.initDeferred.reject(rejection);
     });
   },
-  shouldComponentUpdate(nextProps, nextState) {
+  componentWillReceiveProps(nextProps) {
+    const positionChanged = !_.isEqual(this.props.position, nextProps.position);
+    if (positionChanged) {
+      this.daumMap.initPromise.then(()=> {
+        this.daumMap.map.panTo(new this.daumMap.API.LatLng(...nextProps.position));
+      });
+    }
+  },
+  shouldComponentUpdate() {
+    // don't update react-dom ever.
     return false;
   },
   render() {
