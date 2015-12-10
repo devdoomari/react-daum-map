@@ -26,8 +26,6 @@
   },
   "homepage": "https://github.com/devdoomari/react-daum-map#readme",
   "dependencies": {
-    "getscript-promise": "0.0.1",
-    "jquery": "^2.1.4",
     "lodash": "^3.10.1",
     "node-uuid": "^1.4.7",
     "postscribe": "^1.4.0",
@@ -50,7 +48,6 @@
     "raw-loader": "^0.5.1",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
-    "react-leaflet": "^0.9.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0",
     "webpack-hot-middleware": "^2.6.0"

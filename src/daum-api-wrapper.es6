@@ -1,7 +1,9 @@
 import Promise from 'q';
-// import getScript from 'getscript-promise';
-// import $ from 'jquery';
-const postscribe = require('postscribe');
+
+// Really hacky, but postscribe is not npm-friendly module.
+require('postscribe');
+require('postscribe/htmlParser/htmlParser.js');
+const postscribe = window.postscribe;
 
 const deferred = Promise.defer();
 let isLoading = false;
@@ -9,22 +11,15 @@ let isLoading = false;
 function load(APIKey) {
   if (!isLoading) {
     isLoading = true;
-    //getScript(`https://apis.daum.net/maps/maps3.js?apikey=${APIKey}&libraries=services`)
-    // $.getScript(`https://apis.daum.net/maps/maps3.js?apikey=${APIKey}&libraries=services`)
-    //   .done(()=> {
-    //     deferred.resolve();
-    //   })
-    //   .fail((e)=> {
-    //     deferred.reject(e);
-    //   });
     const url = `https://apis.daum.net/maps/maps3.js?apikey=${APIKey}&libraries=services`;
-    const test = postscribe;
-    debugger;
     postscribe(window.document.head, `<script src="${url}"></script>`, {
       done: ()=> {
         deferred.resolve();
       },
-    })
+      error: (e)=> {
+        deferred.reject(e);
+      },
+    });
   }
   return deferred.promise;
 }

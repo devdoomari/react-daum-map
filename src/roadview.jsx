@@ -46,6 +46,7 @@ export default React.createClass({
       });
     })
     .catch((rejection)=> {
+      console.error(rejection);
       ReactDOM.unmountComponentAtNode(containerDiv);
       ReactDOM.render(this.props.daumAPILoadFailed, containerDiv);
     });
@@ -54,8 +55,6 @@ export default React.createClass({
     return false;
   },
   render() {
-    //const daumMapAPI = daumAPIWrapper.getDaumMapAPI();
-    //const position = daumMapAPI.LatLng(this.props.position);
     return (
       <div ref="containerDiv"></div>
     );
