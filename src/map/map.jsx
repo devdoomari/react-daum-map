@@ -1,9 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import daumAPIWrapper from '../daum-api-wrapper';
+import {
+  getChildName,
+  daumMapCoordsToArrayCoords,
+  daumMapBoundsToMinMaxBounds,
+} from '../utils';
 import DAUM_BASE_MAP_TYPES, {
   convertToDaumBaseMapType,
 } from './constants/base-map-types';
+import OverlayContainer from './overlay-container';
 import Promise from 'q';
 import _ from 'lodash';
 
@@ -20,6 +26,26 @@ export default React.createClass({
     overlayMapTypes: React.PropTypes.array,
     zoomLevel: React.PropTypes.number,
   },
+  getInitialState() {
+    if (this.props.APIKey) {
+      daumAPIWrapper.load(this.props.APIKey);
+    }
+    const initDeferred = Promise.defer();
+    const initPromise = initDeferred.promise;
+    return {
+      map: null,
+      options: {},
+      API: null,
+      initPromise, initDeferred,
+      position: null,
+      bounds: {
+        minLat: null,
+        maxLat: null,
+        minLng: null,
+        maxLng: null,
+      },
+    };
+  },
   getDefaultProps() {
     return {
       apiKey: null,
@@ -28,81 +54,90 @@ export default React.createClass({
       onMove: ()=> {},
     };
   },
-  /* Daum Map API specific objects are stored in this.daumMap */
-  componentWillMount() {
-    if (this.props.APIKey) {
-      daumAPIWrapper.load(this.props.APIKey);
-    }
-    const initDeferred = Promise.defer();
-    const initPromise = initDeferred.promise;
-    this.daumMap = {
-      map: null,
-      options: {},
-      API: null,
-      initPromise, initDeferred,
-      position: null,
-    };
-  },
   componentDidMount() {
     const containerDiv = ReactDOM.findDOMNode(this.refs.containerDiv);
     ReactDOM.render(this.props.daumAPILoading, containerDiv);
     daumAPIWrapper.loadPromise.then(()=> {
       ReactDOM.unmountComponentAtNode(containerDiv);
-      this.daumMap.API = daumAPIWrapper.getDaumMapAPI();
-      const position = new this.daumMap.API.LatLng(...this.props.position);
-      this.daumMap.options = {
-        center: position,
+      this.state.API = daumAPIWrapper.getDaumMapAPI();
+      const propPosition = new this.state.API.LatLng(...this.props.position);
+      this.state.options = {
+        center: propPosition,
         level: 3,
         mapTypeId: convertToDaumBaseMapType(this.props.baseMapType),
       };
-      this.daumMap.map = new this.daumMap.API.Map(containerDiv, this.daumMap.options);
-      this.daumMap.position = daumAPIWrapper.daumMapCoordsToArrayCoords(
-        this.daumMap.map.getCenter());
-      this.daumMap.API.event.addListener(
-        this.daumMap.map, 'center_changed', this.onMove);
-      this.daumMap.initDeferred.resolve();
+      this.state.map = new this.state.API.Map(containerDiv, this.state.options);
+
+      this.state.API.event.addListener(
+        this.state.map, 'center_changed', this.onMove);
+      const position = daumMapCoordsToArrayCoords(
+          this.state.map.getCenter());
+      const bounds = daumMapBoundsToMinMaxBounds(
+          this.state.map.getBounds());
+      this.setState({
+        position,
+        bounds,
+      });
+
+
+      this.state.initDeferred.resolve();
     })
     .catch((rejection)=> {
       console.error(rejection);
       ReactDOM.unmountComponentAtNode(containerDiv);
       ReactDOM.render(this.props.daumAPILoadFailed, containerDiv);
-      this.daumMap.initDeferred.reject(rejection);
+      this.state.initDeferred.reject(rejection);
     });
   },
   componentWillReceiveProps(nextProps) {
     const positionChanged = !_.isEqual(this.props.position, nextProps.position);
     if (positionChanged) {
-      this.daumMap.initPromise.then(()=> {
-        this.daumMap.map.setCenter(new this.daumMap.API.LatLng(...nextProps.position));
-        this.daumMap.position = daumAPIWrapper.daumMapCoordsToArrayCoords(
-          this.daumMap.map.getCenter());
+      this.state.initPromise.then(()=> {
+        this.state.map.setCenter(new this.state.API.LatLng(...nextProps.position));
+        const position = daumMapCoordsToArrayCoords(
+          this.state.map.getCenter());
+        const bounds = daumMapBoundsToMinMaxBounds(
+          this.state.map.getBounds());
+        this.setState({ position, bounds });
       });
     }
     const zoomLevelChanged = !_.isEqual(this.props.zoomLevel, nextProps.zoomLevel);
     if (zoomLevelChanged) {
-      this.daumMap.initPromise.then(()=> {
-        this.daumMap.map.setLevel(nextProps.zoomLevel);
+      this.state.initPromise.then(()=> {
+        this.state.map.setLevel(nextProps.zoomLevel);
+        const bounds = daumMapBoundsToMinMaxBounds(
+          this.state.map.getBounds());
+        this.setState({ bounds });
       });
     }
     const baseMapTypeChanged = !_.isEqual(this.props.baseMapType, nextProps.baseMapType);
     if (baseMapTypeChanged) {
-      this.daumMap.initPromise.then(()=> {
-        this.daumMap.map.setMapTypeId(convertToDaumBaseMapType(nextProps.baseMapType));
+      this.state.initPromise.then(()=> {
+        this.state.map.setMapTypeId(convertToDaumBaseMapType(nextProps.baseMapType));
       });
     }
   },
-  shouldComponentUpdate() {
-    // don't update react-dom.
-    return false;
-  },
   onMove() {
-    const center = this.daumMap.map.getCenter();
-    const coords = daumAPIWrapper.daumMapCoordsToArrayCoords(center);
-    this.props.onMove(coords);
+    const daumPosition = this.state.map.getCenter();
+    const position = daumMapCoordsToArrayCoords(daumPosition);
+    const bounds = daumMapBoundsToMinMaxBounds(
+      this.state.map.getBounds());
+    this.setState({ position, bounds });
+    this.props.onMove(position);
   },
   render() {
     return (
-      <div style={this.props.style} ref="containerDiv"></div>
+      <div key="rootContainer" style={{...this.props.style}}>
+        <div key="container" onMouseMove={this.gotEvent} onClick={this.gotEvent} style={{...this.props.style, position: 'fixed',  zIndex: 0 }} ref="containerDiv"/>
+        <div key="overlays"
+             style={{position: 'fixed', zIndex: 1, overlay: 'hidden'}}>
+          <OverlayContainer
+              position={this.state.position}
+              bounds={this.state.bounds}>
+            {this.props.children}
+          </OverlayContainer>
+        </div>
+      </div>
     );
   },
 });

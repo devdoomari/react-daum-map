@@ -23,9 +23,14 @@ const DaumRoadViewDemo = React.createClass({
       note1Position: [37.566826, 126.97865],
       zoomLevel: 3,
       baseMapType: DAUM_BASE_MAP_TYPES.ROADMAP,
+      children: [],
     };
   },
-
+  onAddChild() {
+    const children = _.clone(this.state.children);
+    children.push(<h1> Some Child! </h1>);
+    this.setState({children});
+  },
   onMove(reportedPosition) {
     this.setState({ reportedPosition });
   },
@@ -54,6 +59,7 @@ const DaumRoadViewDemo = React.createClass({
                          onMove={this.onMove}
                          baseMapType={this.state.baseMapType}>
               <div position={this.state.note1Position}> Some Notes! </div>
+              {this.state.children}
             </DaumMapView>
           </Col>
         </Row>
@@ -61,6 +67,7 @@ const DaumRoadViewDemo = React.createClass({
           <Col md={12}>
             <Button onClick={this.movePositionUp}> up! </Button>
             <Button onClick={this.zoomOut}> Zoom Out! </Button>
+            <Button onClick={this.onAddChild}> add child! </Button>
             <Input type="select" label="BaseMapType" onChange={this.onSetBaseMapType}>
               <option value={DAUM_BASE_MAP_TYPES.ROADMAP}> ROADMAP </option>
               <option value={DAUM_BASE_MAP_TYPES.SKYVIEW}> SKYVIEW </option>
