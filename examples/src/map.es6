@@ -59,6 +59,12 @@ const DaumRoadViewDemo = React.createClass({
                          onMove={this.onMove}
                          baseMapType={this.state.baseMapType}>
               <div position={this.state.note1Position}> Some Notes! </div>
+              <div style={{ position: 'relative', top: 10, left: 50 }}>
+                <h1> dyn. pos! </h1>
+              </div>
+              <div style={{ position: 'relative', top: 10, left: -50 }}>
+                <h1> dyn. pos! </h1>
+              </div>
               {this.state.children}
             </DaumMapView>
           </Col>

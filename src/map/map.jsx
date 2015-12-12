@@ -9,7 +9,7 @@ import {
 import DAUM_BASE_MAP_TYPES, {
   convertToDaumBaseMapType,
 } from './constants/base-map-types';
-import OverlayContainer from './overlay-container';
+import OverlayContainer from './overlay/container';
 import Promise from 'q';
 import _ from 'lodash';
 
@@ -60,9 +60,9 @@ export default React.createClass({
     daumAPIWrapper.loadPromise.then(()=> {
       ReactDOM.unmountComponentAtNode(containerDiv);
       this.state.API = daumAPIWrapper.getDaumMapAPI();
-      const propPosition = new this.state.API.LatLng(...this.props.position);
+      const daumLatLng = new this.state.API.LatLng(...this.props.position);
       this.state.options = {
-        center: propPosition,
+        center: daumLatLng,
         level: 3,
         mapTypeId: convertToDaumBaseMapType(this.props.baseMapType),
       };
@@ -127,10 +127,20 @@ export default React.createClass({
   },
   render() {
     return (
-      <div key="rootContainer" style={{...this.props.style}}>
-        <div key="container" onMouseMove={this.gotEvent} onClick={this.gotEvent} style={{...this.props.style, position: 'fixed',  zIndex: 0 }} ref="containerDiv"/>
+      <div key="rootContainer" style={{...this.props.style, position: 'relative' }}>
+        <div key="container"
+             style={{
+                ...this.props.style,
+                position: 'absolute',
+                zIndex: 1
+             }}
+             ref="containerDiv"/>
         <div key="overlays"
-             style={{position: 'fixed', zIndex: 1, overlay: 'hidden'}}>
+             style={{
+               position: 'absolute',
+               zIndex: 2,
+               overlay: 'hidden'
+             }}>
           <OverlayContainer
               position={this.state.position}
               bounds={this.state.bounds}>
