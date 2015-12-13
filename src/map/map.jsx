@@ -143,7 +143,9 @@ export default React.createClass({
              }}>
           <OverlayContainer
               position={this.state.position}
-              bounds={this.state.bounds}>
+              bounds={this.state.bounds}
+              width={this.props.style.width}
+              height={this.props.style.height}>
             {this.props.children}
           </OverlayContainer>
         </div>

@@ -1,10 +1,10 @@
 import React from 'react';
 
 export default React.createClass({
-  displayName: 'ReactDaumMap::map::overlay::mapBoundOverlay',
+  displayName: 'ReactDaumMap::map::overlay::onScreen',
   propTypes: {
-    lat: React.PropTypes.number.isRequired,
-    lng: React.PropTypes.number.isRequired,
+    top: React.PropTypes.number.isRequired,
+    left: React.PropTypes.number.isRequired,
   },
   render() {
     return (

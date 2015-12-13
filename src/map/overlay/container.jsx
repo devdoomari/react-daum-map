@@ -1,20 +1,42 @@
 import React from 'react';
-import MapBoundOverlay from './map-bound';
-import ScreenBoundOverlay from './screen-bound';
+import OverlayOnMap from './on-map';
+import OverlayOnScreen from './on-screen';
 
 export default React.createClass({
   displayName: 'ReactDaumMap::map::overlay::container',
   propTypes: {
     bounds: React.PropTypes.object.isRequired,
     children: React.PropTypes.array,
+    width: React.PropTypes.number.isRequired,
+    height: React.PropTypes.number.isRequired,
   },
+
   getInitialState() {
-    const children = React.Children.map(this.props.children, (child)=> {
-      return child;
-    });
+    const children = this.getPositionedChildren(
+        this.props.children, this.props.bounds);
     return {
       children,
     };
+  },
+  getPositionedChildren(children, bounds) {
+    return React.Children.map(children, (child)=> {
+      if (child.type === OverlayOnMap) {
+        const lat = child.props.lat;
+        const lng = child.props.lng;
+        //const relativeLat = lat - bounds.
+      } else if (child.type === OverlayOnScreen) {
+        const top = child.props.top;
+        const left = child.props.left;
+        return (
+          <div style={{ position: 'absolute', top, left }}>
+            {child}
+          </div>
+        )
+      } else {
+        // raise error.
+        return <h1> asdsad </h1>
+      }
+    });
   },
   // componentWillReceiveProps(nextProps) {
   //

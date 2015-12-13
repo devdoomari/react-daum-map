@@ -8,6 +8,7 @@ import {
 import _ from 'lodash';
 import {
   DaumMapView,
+  DaumMapOverlayOnMap, DaumMapOverlayOnScreen,
   DAUM_BASE_MAP_TYPES,
   DAUM_OVERLAY_MAP_TYPES,
 } from '../../src/index';
@@ -58,14 +59,12 @@ const DaumRoadViewDemo = React.createClass({
                          zoomLevel={this.state.zoomLevel}
                          onMove={this.onMove}
                          baseMapType={this.state.baseMapType}>
-              <div position={this.state.note1Position}> Some Notes! </div>
-              <div style={{ position: 'relative', top: 10, left: 50 }}>
-                <h1> dyn. pos! </h1>
-              </div>
-              <div style={{ position: 'relative', top: 10, left: -50 }}>
-                <h1> dyn. pos! </h1>
-              </div>
-              {this.state.children}
+              <DaumMapOverlayOnMap lat={37.5668} lng={126.978}>
+                <h3> Map Bound Overlay! </h3>
+              </DaumMapOverlayOnMap>
+              <DaumMapOverlayOnScreen top={50} left={-30}>
+                <h3> Screen Bound Overlay! </h3>
+              </DaumMapOverlayOnScreen>
             </DaumMapView>
           </Col>
         </Row>

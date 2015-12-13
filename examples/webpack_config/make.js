@@ -93,7 +93,9 @@ module.exports = function makeWebpackConfig (options) {
       // Compiles ES6 and ES7 into ES5 code
       test: /\.es6$/,
       //loader: 'babel',
-      loaders: ['ng-annotate', 'nginject', 'babel-loader?stage=0&optional=runtime'],//?optional[]=runtime'],
+      //loaders: ['ng-annotate', 'nginject', 'babel-loader?stage=0&optional=runtime'],//?optional[]=runtime'],
+      loaders: ['ng-annotate', 'nginject', 'babel'],//?optional[]=runtime'],
+      // loaders: ['babel', 'flowcheck', 'babel'],
       exclude: /node_modules/
     }, {
       // JS LOADER
@@ -101,7 +103,7 @@ module.exports = function makeWebpackConfig (options) {
       // Transpile .js files using babel-loader
       // Compiles ES6 and ES7 into ES5 code
       test: /\.jsx$/,
-      loader: 'babel?optional[]=runtime',
+      loader: 'babel',
       exclude: /node_modules/
     }, {
       // ASSET LOADER
