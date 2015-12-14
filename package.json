@@ -2,8 +2,9 @@
   "name": "react-daum-map",
   "version": "0.0.1",
   "description": "React wrapper for daum map",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "install": "$(npm bin)/babel src --out-dir dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "$(npm bin)/webpack --config examples/webpack_config/build.js --bail -p",
     "clean": "rm -r examples/dist",

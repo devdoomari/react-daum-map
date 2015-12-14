@@ -11,9 +11,6 @@ export default class Bounds {
     this.minLng = minLng;
     this.maxLng = maxLng;
   }
-  test():boolean {
-    return 'yes';
-  }
 }
 
 const test2 = new Bounds({
