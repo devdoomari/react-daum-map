@@ -4,10 +4,10 @@
   "description": "React wrapper for daum map",
   "main": "dist/index.js",
   "scripts": {
-    "install": "$(npm bin)/babel src --out-dir dist",
+    "postinstall": "$(npm bin)/babel src --out-dir dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "$(npm bin)/webpack --config examples/webpack_config/build.js --bail -p",
-    "clean": "rm -r examples/dist",
+    "clean": "rm -r examples/dist dist",
     "watch_examples": "$(npm bin)/webpack --watch --config examples/webpack_config/build.js --bail -p",
     "dev": "$(npm bin)/webpack-dev-server --config examples/webpack_config/config.js --history-api-fallback"
   },
@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.1.2",
+    "babel-cli": "^6.3.17",
     "babel-core": "^6.3.17",
     "babel-loader": "^6.2.0",
     "babel-plugin-syntax-flow": "^6.3.13",
