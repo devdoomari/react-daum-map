@@ -1,9 +1,0 @@
-[ignore]
-examples/webpack_config/*
-
-[include]
-examples/src
-src
-
-[libs]
-node_modules

@@ -1,0 +1,11 @@
+{
+	"version": "1.7.3",
+	"compilerOptions": {
+		"target": "ES6",
+		"module": "commonjs",
+		"jsx": "preserve",
+		"noImplicitAny": false,
+		"watch": true,
+		"moduleResolution": "node"
+	}
+}

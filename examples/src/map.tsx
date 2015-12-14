@@ -1,5 +1,5 @@
-import ReactDOM from 'react-dom';
-import React from 'react';
+const ReactDOM = require('react-dom');
+const React = require('react');
 import {
   Row, Col,
   Button,
