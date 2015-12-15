@@ -5,7 +5,7 @@ import {
   Button,
   Input,
 } from 'react-bootstrap';
-import _ from 'lodash';
+const _ = require('lodash');
 import {
   DaumMapView,
   DaumMapOverlayOnMap, DaumMapOverlayOnScreen,

@@ -35,8 +35,8 @@ module.exports = function makeWebpackConfig (options) {
   } else {
     config.entry = {
       // app: './src/index.es6'
-      'roadview': './examples/src/roadview.es6',
-      'map': './examples/src/map.es6',
+      // 'roadview': './examples/src/roadview.es6',
+      'map': './examples/src/map.tsx',
     };
   }
 
@@ -83,6 +83,7 @@ module.exports = function makeWebpackConfig (options) {
     config.devtool = 'inline-source-map';//'inline-source-map';//'eval';
   }
 
+  console.log('\n\n\n' + path.join(__dirname, '../..') + '\n\n\n')
   // Initialize module
   config.module = {
     preLoaders: [],
@@ -91,12 +92,31 @@ module.exports = function makeWebpackConfig (options) {
       // Reference: https://github.com/babel/babel-loader
       // Transpile .es6 files using babel-loader
       // Compiles ES6 and ES7 into ES5 code
-      test: /\.es6$/,
-      //loader: 'babel',
-      //loaders: ['ng-annotate', 'nginject', 'babel-loader?stage=0&optional=runtime'],//?optional[]=runtime'],
-      loaders: ['ng-annotate', 'nginject', 'babel'],//?optional[]=runtime'],
-      // loaders: ['babel', 'flowcheck', 'babel'],
-      exclude: /node_modules/
+    //   test: /\.es6$/,
+    //   //loader: 'babel',
+    //   //loaders: ['ng-annotate', 'nginject', 'babel-loader?stage=0&optional=runtime'],//?optional[]=runtime'],
+    //   loaders: ['ng-annotate', 'nginject', 'babel'],//?optional[]=runtime'],
+    //   // loaders: ['babel', 'flowcheck', 'babel'],
+    //   exclude: /node_modules/
+    // }, {
+      // Typescript loader.
+      test: /\.ts$/,
+      //loaders: ['typescript-loader?typescriptCompiler=jsx-typescript'],//?optional[]=runtime'],
+      loaders: ['awesome-typescript-loader'],
+      exclude: [
+        /node_modules/,
+        path.join(__dirname, '../../node_modules/')
+      ]
+    }, {
+      // Typescript loader.
+      test: /\.tsx$/,
+      // loaders: ['ng-annotate', 'nginject', 'ts-loader?configFileName=../../tsconfig.json', 'babel'],//?optional[]=runtime'],
+      //loaders: ['typescript-loader?typescriptCompiler=jsx-typescript'],//?optional[]=runtime'],
+      loaders: ['awesome-typescript-loader'],
+      exclude: [
+        /node_modules/,
+        path.join(__dirname, '../../node_modules/')
+      ]
     }, {
       // JS LOADER
       // Reference: https://github.com/babel/babel-loader
@@ -270,7 +290,7 @@ module.exports = function makeWebpackConfig (options) {
    * For import / require on .es6 files without appending file extensions.
    */
   config.resolve = config.resolve || {};
-  config.resolve.extensions = ['', '.js', '.es6', '.jsx'];
+  config.resolve.extensions = ['', '.js', '.es6', '.jsx', '.ts', '.tsx'];
 
   return config;
 };
