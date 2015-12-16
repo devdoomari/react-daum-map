@@ -13,6 +13,7 @@
 	],
 	"files": [
 		"examples/src/map.tsx",
-		"./typings/tsd.d.ts"
+		"./typings/tsd.d.ts",
+		"./src/global.d.ts"
 	]
 }
