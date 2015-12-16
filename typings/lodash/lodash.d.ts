@@ -3,8 +3,6 @@
 // Definitions by: Brian Zengel <https://github.com/bczengel>, Ilya Mochalov <https://github.com/chrootsu>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-declare var _: _.LoDashStatic;
-
 declare module _ {
     interface LoDashStatic {
         /**
@@ -9285,8 +9283,9 @@ declare module _ {
         /**
          * Checks if value is classified as a Date object.
          * @param value The value to check.
+         *
          * @return Returns true if value is correctly classified, else false.
-         **/
+         */
         isDate(value?: any): value is Date;
     }
 
@@ -9295,6 +9294,13 @@ declare module _ {
          * @see _.isDate
          */
         isDate(): boolean;
+    }
+
+    interface LoDashExplicitWrapperBase<T, TWrapper> {
+        /**
+         * @see _.isDate
+         */
+        isDate(): LoDashExplicitWrapper<boolean>;
     }
 
     //_.isElement
@@ -9434,9 +9440,10 @@ declare module _ {
     interface LoDashStatic {
         /**
          * Checks if value is classified as a Function object.
+         *
          * @param value The value to check.
          * @return Returns true if value is correctly classified, else false.
-         **/
+         */
         isFunction(value?: any): value is Function;
     }
 
@@ -9445,6 +9452,13 @@ declare module _ {
          * @see _.isFunction
          */
         isFunction(): boolean;
+    }
+
+    interface LoDashExplicitWrapperBase<T, TWrapper> {
+        /**
+         * @see _.isFunction
+         */
+        isFunction(): LoDashExplicitWrapper<boolean>;
     }
 
     //_.isMatch
@@ -9605,6 +9619,7 @@ declare module _ {
         /**
          * Checks if value is classified as a RegExp object.
          * @param value The value to check.
+         *
          * @return Returns true if value is correctly classified, else false.
          */
         isRegExp(value?: any): value is RegExp;
@@ -9615,6 +9630,13 @@ declare module _ {
          * see _.isRegExp
          */
         isRegExp(): boolean;
+    }
+
+    interface LoDashExplicitWrapperBase<T, TWrapper> {
+        /**
+         * see _.isRegExp
+         */
+        isRegExp(): LoDashExplicitWrapper<boolean>;
     }
 
     //_.isString

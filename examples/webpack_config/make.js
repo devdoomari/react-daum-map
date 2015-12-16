@@ -102,7 +102,7 @@ module.exports = function makeWebpackConfig (options) {
       // Typescript loader.
       test: /\.ts$/,
       //loaders: ['typescript-loader?typescriptCompiler=jsx-typescript'],//?optional[]=runtime'],
-      loaders: ['awesome-typescript-loader'],
+      loaders: ['ts-loader', 'babel'],
       exclude: [
         /node_modules/,
         path.join(__dirname, '../../node_modules/')
@@ -112,7 +112,7 @@ module.exports = function makeWebpackConfig (options) {
       test: /\.tsx$/,
       // loaders: ['ng-annotate', 'nginject', 'ts-loader?configFileName=../../tsconfig.json', 'babel'],//?optional[]=runtime'],
       //loaders: ['typescript-loader?typescriptCompiler=jsx-typescript'],//?optional[]=runtime'],
-      loaders: ['awesome-typescript-loader'],
+      loaders: ['ts-loader', 'babel'],
       exclude: [
         /node_modules/,
         path.join(__dirname, '../../node_modules/')

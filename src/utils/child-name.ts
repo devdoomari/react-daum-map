@@ -1,4 +1,4 @@
-import _ from 'lodash';
+const _ = require('lodash');
 export default function getChildName(child) {
   let childName = '?';
   if (_.isString(child.type)) {

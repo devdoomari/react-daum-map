@@ -9,10 +9,10 @@
 		"moduleResolution": "node"
 	},
 	"exclude": [
-		"node_modules",
-		"src/typings"
+		"node_modules"
 	],
 	"files": [
+		"examples/src/map.tsx",
 		"./typings/tsd.d.ts"
 	]
 }

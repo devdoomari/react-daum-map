@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+const React = require('react');
+const ReactDOM = ('react-dom');
 import daumAPIWrapper from './daum-api-wrapper';
 
 export default React.createClass({

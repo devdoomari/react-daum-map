@@ -1,6 +1,8 @@
-/* @flow */
-
 export default class Bounds {
+  minLat:number;
+  maxLat:number;
+  minLng:number;
+  maxLng:number;
   constructor(
       minLat: number,
       maxLat: number,
@@ -12,7 +14,3 @@ export default class Bounds {
     this.maxLng = maxLng;
   }
 }
-
-const test2 = new Bounds({
-  asdasd: 123123,
-});
