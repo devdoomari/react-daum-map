@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+const React = require('react');
+const ReactDOM = require('react-dom');
 import daumAPIWrapper from '../daum-api-wrapper';
 import {
   getChildName,
@@ -127,12 +127,14 @@ export default React.createClass({
   },
   render() {
     return (
-      <div key="rootContainer" style={{...this.props.style, position: 'relative' }}>
+      <div key='rootContainer' style={_.assign({}, this.props.style, {position: 'relative'})} >
         <div key="container"
-             style={{
-                ...this.props.style,
-                position: 'absolute',
-                zIndex: 1
+             style={()=>{
+                return {
+                  ...this.props.style,
+                  position: 'absolute',
+                  zIndex: 1
+                };
              }}
              ref="containerDiv"/>
         <div key="overlays"

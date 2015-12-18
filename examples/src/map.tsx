@@ -1,11 +1,12 @@
-const ReactDOM = require('react-dom');
-const React = require('react');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {
   Row, Col,
   Button,
   Input,
 } from 'react-bootstrap';
-const _ = require('lodash');
+import * as _ from 'lodash';
+
 import {
   DaumMapView,
   DaumMapOverlayOnMap, DaumMapOverlayOnScreen,

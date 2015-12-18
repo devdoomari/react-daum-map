@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 import OverlayOnMap from './on-map';
 import OverlayOnScreen from './on-screen';
 

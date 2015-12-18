@@ -88,31 +88,11 @@ module.exports = function makeWebpackConfig (options) {
   config.module = {
     preLoaders: [],
     loaders: [{
-      // JS LOADER
-      // Reference: https://github.com/babel/babel-loader
-      // Transpile .es6 files using babel-loader
-      // Compiles ES6 and ES7 into ES5 code
-    //   test: /\.es6$/,
-    //   //loader: 'babel',
-    //   //loaders: ['ng-annotate', 'nginject', 'babel-loader?stage=0&optional=runtime'],//?optional[]=runtime'],
-    //   loaders: ['ng-annotate', 'nginject', 'babel'],//?optional[]=runtime'],
-    //   // loaders: ['babel', 'flowcheck', 'babel'],
-    //   exclude: /node_modules/
-    // }, {
       // Typescript loader.
-      test: /\.ts$/,
-      //loaders: ['typescript-loader?typescriptCompiler=jsx-typescript'],//?optional[]=runtime'],
-      loaders: ['ts-loader', 'babel'],
-      exclude: [
-        /node_modules/,
-        path.join(__dirname, '../../node_modules/')
-      ]
-    }, {
-      // Typescript loader.
-      test: /\.tsx$/,
+      test: /\.ts(x)$/,
       // loaders: ['ng-annotate', 'nginject', 'ts-loader?configFileName=../../tsconfig.json', 'babel'],//?optional[]=runtime'],
       //loaders: ['typescript-loader?typescriptCompiler=jsx-typescript'],//?optional[]=runtime'],
-      loaders: ['ts-loader', 'babel'],
+      loader: 'babel-loader!ts-loader',
       exclude: [
         /node_modules/,
         path.join(__dirname, '../../node_modules/')
@@ -216,14 +196,14 @@ module.exports = function makeWebpackConfig (options) {
   if (!TEST) {
     // Reference: https://github.com/ampedandwired/html-webpack-plugin
     // Render index.html
-    config.plugins.push(
-      new HtmlWebpackPlugin({
-        template: './examples/src/roadview.html',
-        inject: 'body',
-        chunks: ['roadview'],
-        filename: 'roadview.html',
-      })
-    )
+    // config.plugins.push(
+    //   new HtmlWebpackPlugin({
+    //     template: './examples/src/roadview.html',
+    //     inject: 'body',
+    //     chunks: ['roadview'],
+    //     filename: 'roadview.html',
+    //   })
+    // )
     config.plugins.push(
       new HtmlWebpackPlugin({
         template: './examples/src/map.html',
