@@ -12,5 +12,34 @@
 	},
 	"exclude": [
 		"node_modules"
-	]
+	],
+	"files": [
+		"./typings/lodash/lodash.d.ts",
+		"./typings/node/node.d.ts",
+		"./typings/q/Q.d.ts",
+		"./typings/react-bootstrap/react-bootstrap.d.ts",
+		"./typings/react/react-dom.d.ts",
+		"./typings/react/react.d.ts",
+		"./typings/tsd.d.ts",
+		"./examples/config.ts",
+		"./examples/src/map.tsx",
+		"./src/datatypes/bounds.ts",
+		"./src/daum-api-wrapper.ts",
+		"./src/global.d.ts",
+		"./src/index.ts",
+		"./src/map/constants/base-map-types.ts",
+		"./src/map/constants/overlay-map-types.ts",
+		"./src/map/map.tsx",
+		"./src/map/overlay/container.tsx",
+		"./src/map/overlay/on-map.tsx",
+		"./src/map/overlay/on-screen.tsx",
+		"./src/roadview.tsx",
+		"./src/utils/child-name.ts",
+		"./src/utils/daum-map-bounds-to-min-max-bounds.ts",
+		"./src/utils/daum-map-coords-to-array-coords.ts",
+		"./src/utils/index.ts"
+	],
+	"atom": {
+		"rewriteTsconfig": true
+	}
 }

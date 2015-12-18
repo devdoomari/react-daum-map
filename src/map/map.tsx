@@ -1,5 +1,5 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import daumAPIWrapper from '../daum-api-wrapper';
 import {
   getChildName,
@@ -10,8 +10,8 @@ import DAUM_BASE_MAP_TYPES, {
   convertToDaumBaseMapType,
 } from './constants/base-map-types';
 import OverlayContainer from './overlay/container';
-import Promise from 'q';
-import _ from 'lodash';
+import * as Promise from 'q';
+import * as _ from 'lodash';
 
 export default React.createClass({
   displayName: 'ReactDaumMap::map',
@@ -125,17 +125,22 @@ export default React.createClass({
     this.setState({ position, bounds });
     this.props.onMove(position);
   },
+  // https://github.com/Microsoft/TypeScript/issues/2103
   render() {
     return (
-      <div key='rootContainer' style={_.assign({}, this.props.style, {position: 'relative'})} >
+      <div key='rootContainer'
+           style={
+             _.assign({}, this.props.style,
+                      {position: 'relative'})
+           }>
         <div key="container"
-             style={()=>{
-                return {
-                  ...this.props.style,
-                  position: 'absolute',
-                  zIndex: 1
-                };
-             }}
+             style={
+               _.assign({}, this.props.style,
+                        {
+                          position: 'absolute',
+                          zIndex: 1
+                        })
+               }
              ref="containerDiv"/>
         <div key="overlays"
              style={{
