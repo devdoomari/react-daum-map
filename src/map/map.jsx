@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Promise from 'q';
+import _ from 'lodash';
+
 import daumAPIWrapper from '../daum-api-wrapper';
 import {
   getChildName,
@@ -10,8 +13,8 @@ import DAUM_BASE_MAP_TYPES, {
   convertToDaumBaseMapType,
 } from './constants/base-map-types';
 import OverlayContainer from './overlay/container';
-import Promise from 'q';
-import _ from 'lodash';
+import Bounds from '../datatypes/bounds';
+
 
 export default React.createClass({
   displayName: 'ReactDaumMap::map',
@@ -38,12 +41,12 @@ export default React.createClass({
       API: null,
       initPromise, initDeferred,
       position: null,
-      bounds: {
+      bounds: new Bounds({
         minLat: null,
         maxLat: null,
         minLng: null,
         maxLng: null,
-      },
+      }),
     };
   },
   getDefaultProps() {
@@ -139,7 +142,7 @@ export default React.createClass({
              style={{
                position: 'absolute',
                zIndex: 2,
-               overlay: 'hidden'
+               //overlay: 'hidden'
              }}>
           <OverlayContainer
               position={this.state.position}

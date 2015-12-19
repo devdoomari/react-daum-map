@@ -62,9 +62,10 @@ const DaumRoadViewDemo = React.createClass({
               <DaumMapOverlayOnMap lat={37.5668} lng={126.978}>
                 <h3> Map Bound Overlay! </h3>
               </DaumMapOverlayOnMap>
-              <DaumMapOverlayOnScreen top={50} left={-30}>
+              <DaumMapOverlayOnScreen top={200} left={200}>
                 <h3> Screen Bound Overlay! </h3>
               </DaumMapOverlayOnScreen>
+
             </DaumMapView>
           </Col>
         </Row>

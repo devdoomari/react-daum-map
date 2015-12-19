@@ -5,6 +5,12 @@ export default React.createClass({
   propTypes: {
     lat: React.PropTypes.number.isRequired,
     lng: React.PropTypes.number.isRequired,
+    visibilityFunc: React.PropTypes.func,
+  },
+  getDefaultProps() {
+    return {
+      visibilityFunc: (bounds)=> true,
+    };
   },
   render() {
     return (
