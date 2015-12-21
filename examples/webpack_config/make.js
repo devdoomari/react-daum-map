@@ -37,6 +37,7 @@ module.exports = function makeWebpackConfig (options) {
       // app: './src/index.es6'
       'roadview': './examples/src/roadview.es6',
       'map': './examples/src/map.es6',
+      'mapPlayground': './examples/src/map_playground.es6',
     };
   }
 
@@ -92,10 +93,7 @@ module.exports = function makeWebpackConfig (options) {
       // Transpile .es6 files using babel-loader
       // Compiles ES6 and ES7 into ES5 code
       test: /\.es6$/,
-      //loader: 'babel',
-      //loaders: ['ng-annotate', 'nginject', 'babel-loader?stage=0&optional=runtime'],//?optional[]=runtime'],
-      loaders: ['ng-annotate', 'nginject', 'babel'],//?optional[]=runtime'],
-      // loaders: ['babel', 'flowcheck', 'babel'],
+      loader: 'babel',
       exclude: /node_modules/
     }, {
       // JS LOADER
@@ -210,6 +208,14 @@ module.exports = function makeWebpackConfig (options) {
         inject: 'body',
         chunks: ['map'],
         filename: 'map.html',
+      })
+    )
+    config.plugins.push(
+      new HtmlWebpackPlugin({
+        template: './examples/src/map_playground.html',
+        inject: 'body',
+        chunks: ['mapPlayground'],
+        filename: 'map_playground.html',
       })
     )
   }

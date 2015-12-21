@@ -1,0 +1,12 @@
+var ComponentExample = React.createClass({
+    render: function() {
+      return (
+        <button type="button">
+          <p>Hover Me</p>
+        </button>
+      )
+    }
+});
+
+const mountNode = document.getElementById('mount-node');
+ReactDOM.render(<ComponentExample/>, mountNode);

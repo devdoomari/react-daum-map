@@ -2,8 +2,6 @@ import React from 'react';
 import OverlayOnMap from './on-map';
 import OverlayOnScreen from './on-screen';
 
-window.bounds = [];
-
 export default React.createClass({
   displayName: 'ReactDaumMap::map::overlay::container',
   propTypes: {
