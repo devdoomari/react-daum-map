@@ -1,22 +1,18 @@
 import React from 'react';
 
-export default React.createClass({
-  displayName: 'ReactDaumMap::map::overlay::onMap',
-  propTypes: {
-    lat: React.PropTypes.number.isRequired,
-    lng: React.PropTypes.number.isRequired,
-    visibilityFunc: React.PropTypes.func,
-  },
-  getDefaultProps() {
-    return {
-      visibilityFunc: (bounds)=> true,
-    };
-  },
-  render() {
-    return (
-      <div>
-        {this.props.children}
-      </div>
-    );
-  },
-});
+const DaumMapOverlayOnMap = (props) => (
+  <div>
+    {props.children}
+  </div>
+);
+
+DaumMapOverlayOnMap.propTypes = {
+  lat: React.PropTypes.number.isRequired,
+  lng: React.PropTypes.number.isRequired,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    React.PropTypes.object,
+  ]),
+};
+
+export default DaumMapOverlayOnMap;

@@ -1,16 +1,18 @@
 import React from 'react';
 
-export default React.createClass({
-  displayName: 'ReactDaumMap::map::overlay::onScreen',
-  propTypes: {
-    top: React.PropTypes.number.isRequired,
-    left: React.PropTypes.number.isRequired,
-  },
-  render() {
-    return (
-      <div>
-        {this.props.children}
-      </div>
-    );
-  },
-});
+const DaumMapOverlayOnScreen = (props) => (
+  <div>
+    {props.children}
+  </div>
+);
+
+DaumMapOverlayOnScreen.propTypes = {
+  top: React.PropTypes.number.isRequired,
+  left: React.PropTypes.number.isRequired,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    React.PropTypes.object,
+  ]),
+};
+
+export default DaumMapOverlayOnScreen;

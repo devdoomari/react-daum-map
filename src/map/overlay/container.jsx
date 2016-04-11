@@ -6,34 +6,27 @@ import {
   translateBoundPos,
 } from '../../utils';
 
-export default React.createClass({
-  displayName: 'ReactDaumMap::map::overlay::container',
-  propTypes: {
-    bounds: React.PropTypes.object.isRequired,
-    width: React.PropTypes.number,
-    height: React.PropTypes.number,
-    children: React.PropTypes.array,
-  },
-  getInitialState() {
+export default class DaumMapOverlayContainer extends React.Component {
+  constructor(props) {
+    super(props);
     const children = this.getPositionedChildren(
-        this.props.children, this.props.bounds,
-        this.props.width, this.props.height);
-    return {
+      this.props.children, this.props.bounds,
+      this.props.width, this.props.height);
+    this.state = {
       children,
     };
-  },
+  }
   componentWillReceiveProps(nextProps) {
     const children = this.getPositionedChildren(
       nextProps.children, nextProps.bounds,
       nextProps.width, nextProps.height);
-    this.setState({ children });
-  },
-  getPositionedChildren(children, bounds, width, height) {
-    return React.Children.map(children, (child)=> {
+    this.setState({
+      children,
+    });
+  }
+  getPositionedChildren = (children, bounds, width, height) => (
+    React.Children.map(children, (child) => {
       if (child.type === OverlayOnMap) {
-        if(!child.props.visibilityFunc(child.props, bounds)) {
-          return null;
-        }
         const lat = child.props.lat;
         const lng = child.props.lng;
         const { left, top } = translateBoundPos({
@@ -41,7 +34,10 @@ export default React.createClass({
           width, height, lat, lng,
         });
         return (
-          <div key={child.key} style={{ position: 'absolute', top, left }}>
+          <div
+            key={child.key}
+            style={{ position: 'absolute', top, left }}
+          >
             {child}
           </div>
         );
@@ -49,23 +45,32 @@ export default React.createClass({
         const top = child.props.top;
         const left = child.props.left;
         return (
-          <div key={child.key} style={{ position: 'absolute', top, left }}>
+          <div
+            key={child.key}
+            style={{ position: 'absolute', top, left }}
+          >
             {child}
           </div>
-        )
-      } else {
-        // raise error.
-        return <h1> asdsad </h1>
+        );
       }
-    });
-  },
-  // componentWillReceiveProps(nextProps) {
-  //
-  // },
+      // raise error.
+      return (<h1> Unknown Overlay Type </h1>);
+    })
+  )
   render() {
     return (
       <div>
         {this.state.children}
       </div>);
-  },
-});
+  }
+}
+
+DaumMapOverlayContainer.propTypes = {
+  bounds: React.PropTypes.object.isRequired,
+  width: React.PropTypes.number,
+  height: React.PropTypes.number,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    React.PropTypes.object,
+  ]),
+};
