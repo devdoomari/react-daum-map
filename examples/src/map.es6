@@ -55,7 +55,7 @@ class DaumRoadViewDemo extends Component {
       <div>
         <Row>
           <Col md={12}>
-            <DaumMapView style={{ width: 400, height: 400 }}
+            <DaumMapView style={{ width: 800, height: 600 }}
                          position={this.state.position}
                          APIKey={APIKEY}
                          zoomLevel={this.state.zoomLevel}
