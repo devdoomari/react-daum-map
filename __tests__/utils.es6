@@ -25,7 +25,7 @@ describe('translateBoundPos should...', () => {
     const { top, left } = translateBoundPos({
       bounds,
       width: 100, height: 100,
-      lat: 35, lng: 40,
+      lat: 40, lng: 35,
     });
     expect(top).toEqual(50);
     expect(left).toEqual(50);
