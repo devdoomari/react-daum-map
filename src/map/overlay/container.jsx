@@ -71,16 +71,6 @@ export default React.createClass({
   //
   // },
   render() {
-    const boundsText = (
-      <div>
-        <h5>
-          {this.props.bounds.minLat} : {this.props.bounds.maxLat}
-        </h5>
-        <h5>
-          {this.props.bounds.minLng} : {this.props.bounds.maxLng}
-        </h5>
-      </div>
-    );
     return (
       <div>
         {this.state.children}
