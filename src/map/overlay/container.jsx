@@ -4,7 +4,7 @@ import OverlayOnScreen from './on-screen';
 
 import {
   translateBoundPos,
-} from '../utils';
+} from '../../utils';
 
 export default React.createClass({
   displayName: 'ReactDaumMap::map::overlay::container',
