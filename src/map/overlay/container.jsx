@@ -2,6 +2,10 @@ import React from 'react';
 import OverlayOnMap from './on-map';
 import OverlayOnScreen from './on-screen';
 
+import {
+  translateBoundPos,
+} from '../utils';
+
 export default React.createClass({
   displayName: 'ReactDaumMap::map::overlay::container',
   propTypes: {
@@ -22,19 +26,7 @@ export default React.createClass({
     const children = this.getPositionedChildren(
       nextProps.children, nextProps.bounds,
       nextProps.width, nextProps.height);
-    this.setState({children});
-  },
-  translateBoundPos({bounds, width, height, lat, lng}={}) {
-    const boundsLatSize = bounds.maxLat - bounds.minLat;
-    const boundsLngSize = bounds.maxLng - bounds.minLng;
-    const relativeLat = lat - bounds.minLat;
-    const relativeLng = lng - bounds.minLng;
-    const latRatio = relativeLat / boundsLatSize;
-    const lngRatio = relativeLng / boundsLngSize;
-    return {
-      left: width * lngRatio,
-      top: (-1) * height * latRatio,
-    };
+    this.setState({ children });
   },
   getPositionedChildren(children, bounds, width, height) {
     return React.Children.map(children, (child)=> {
@@ -44,7 +36,7 @@ export default React.createClass({
         }
         const lat = child.props.lat;
         const lng = child.props.lng;
-        const {left, top} = this.translateBoundPos({
+        const { left, top } = translateBoundPos({
           bounds: this.props.bounds,
           width, height, lat, lng,
         });
