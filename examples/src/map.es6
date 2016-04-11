@@ -1,5 +1,7 @@
 import ReactDOM from 'react-dom';
-import React from 'react';
+import React, {
+  Component
+} from 'react';
 import {
   Row, Col,
   Button,
@@ -16,39 +18,39 @@ import {
   APIKEY,
 } from '../config';
 
-const DaumRoadViewDemo = React.createClass({
-  getInitialState() {
-    return {
+class DaumRoadViewDemo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       position: [37.566826, 126.9786567],
       reportedPosition: [null, null],
       note1Position: [37.566826, 126.97865],
       zoomLevel: 3,
       baseMapType: DAUM_BASE_MAP_TYPES.ROADMAP,
       children: [],
-    };
-  },
-  onAddChild() {
-    const children = _.clone(this.state.children);
-    children.push(<h1> Some Child! </h1>);
-    this.setState({children});
-  },
-  onMove(reportedPosition) {
+    }
+  }
+  handleAddChild = () => {
+    const children = _.concat(this.state.children, [<h1> Some Child! </h1>]);
+    this.setState({ children });
+  }
+  handleMove = (reportedPosition) => {
     this.setState({ reportedPosition });
-  },
-  onSetBaseMapType(event) {
+  }
+  onSetBaseMapType = (event) => {
     const baseMapType = event.target.value;
     this.setState({ baseMapType });
-  },
-  zoomOut() {
+  }
+  onZoomOut = () => {
     const zoomLevel = this.state.zoomLevel + 1;
     this.setState({ zoomLevel });
-  },
-  movePositionUp() {
+  }
+  onMovePositionUp = () => {
     const position = _.clone(this.state.position);
     position[0] = position[0] + 0.001;
     this.setState({ position });
-  },
-  render() {
+  }
+  render = () => {
     return (
       <div>
         <Row>
@@ -84,8 +86,8 @@ const DaumRoadViewDemo = React.createClass({
         </Row>
       </div>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(
   <DaumRoadViewDemo/>,
