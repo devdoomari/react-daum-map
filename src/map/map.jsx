@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Promise from 'q';
+import {
+  defer,
+} from 'q';
 import _ from 'lodash';
 
 import daumAPIWrapper from '../daum-api-wrapper';
@@ -21,15 +23,14 @@ export default class DaumMap extends React.Component {
       this.daumAPILoadPromise = daumAPIWrapper.load(this.props.APIKey);
     }
 
-    const initDeferred = Promise.defer();
-    const initPromise = initDeferred.promise;
+    this.initDeferred = defer();
+    this.initPromise = this.initDeferred.promise;
 
     this.state = {
       map: null,
       options: {},
       API: null,
       position: null,
-      initPromise, initDeferred,
       bounds: new Bounds({
         minLat: null,
         maxLat: null,
@@ -57,55 +58,55 @@ export default class DaumMap extends React.Component {
       const position = daumMapCoordsToArrayCoords(daumMap.getCenter());
       const bounds = daumMapBoundsToMinMaxBounds(daumMap.getBounds());
 
+      this.map = daumMap;
+      this.mapAPI = daumAPIWrapper.getDaumMapAPI();
       this.setState({
-        API: daumAPIWrapper.getDaumMapAPI(),
         options,
-        map: daumMap,
         position,
         bounds,
       });
-      this.state.initDeferred.resolve();
+      this.initDeferred.resolve();
     })
     .catch((rejection) => {
       console.error(rejection);
       ReactDOM.unmountComponentAtNode(containerDiv);
       ReactDOM.render(this.props.daumAPILoadFailed, containerDiv);
-      this.state.initDeferred.reject(rejection);
+      this.initDeferred.reject(rejection);
     });
   }
   componentWillReceiveProps = (nextProps) => {
     const positionChanged = !_.isEqual(this.props.position, nextProps.position);
     if (positionChanged) {
       this.initPromise.then(() => {
-        this.state.map.setCenter(new this.state.API.LatLng(...nextProps.position));
+        this.map.setCenter(new this.mapAPI.LatLng(...nextProps.position));
         const position = daumMapCoordsToArrayCoords(
-          this.state.map.getCenter());
+          this.map.getCenter());
         const bounds = daumMapBoundsToMinMaxBounds(
-          this.state.map.getBounds());
+          this.map.getBounds());
         this.setState({ position, bounds });
       });
     }
     const zoomLevelChanged = !_.isEqual(this.props.zoomLevel, nextProps.zoomLevel);
     if (zoomLevelChanged) {
       this.initPromise.then(() => {
-        this.state.map.setLevel(nextProps.zoomLevel);
+        this.map.setLevel(nextProps.zoomLevel);
         const bounds = daumMapBoundsToMinMaxBounds(
-          this.state.map.getBounds());
+          this.map.getBounds());
         this.setState({ bounds });
       });
     }
     const baseMapTypeChanged = !_.isEqual(this.props.baseMapType, nextProps.baseMapType);
     if (baseMapTypeChanged) {
-      this.state.initPromise.then(() => {
-        this.state.map.setMapTypeId(convertToDaumBaseMapType(nextProps.baseMapType));
+      this.initPromise.then(() => {
+        this.map.setMapTypeId(convertToDaumBaseMapType(nextProps.baseMapType));
       });
     }
   }
   onMove = () => {
-    const daumPosition = this.state.map.getCenter();
+    const daumPosition = this.map.getCenter();
     const position = daumMapCoordsToArrayCoords(daumPosition);
     const bounds = daumMapBoundsToMinMaxBounds(
-      this.state.map.getBounds());
+      this.map.getBounds());
     this.setState({ position, bounds });
     this.props.onMove(position);
   }
