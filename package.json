@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "postinstall": "node_modules/.bin/babel src --out-dir dist",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "$(npm bin)/jest",
     "build": "node_modules/.bin/webpack --config examples/webpack_config/build.js --bail -p",
     "clean": "rm -r examples/dist dist",
     "watch_examples": "node_modules/.bin/webpack --watch --config examples/webpack_config/build.js --bail -p",
@@ -46,18 +46,30 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.1.2",
+    "babel-jest": "^10.0.1",
+    "babel-polyfill": "^6.7.4",
     "codemirror": "^5.9.0",
     "component-playground": "^1.2.0",
     "eslint": "^2.7.0",
     "eslint-config-airbnb": "^6.2.0",
+    "eslint-plugin-jasmine": "^1.8.1",
     "eslint-plugin-react": "^4.3.0",
     "extract-text-webpack-plugin": "^0.9.1",
     "flowcheck": "^0.2.7",
     "html-webpack-plugin": "^1.7.0",
+    "jest-cli": "^0.10.0",
     "raw-loader": "^0.5.1",
     "react-bootstrap": "^0.28.1",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0",
     "webpack-hot-middleware": "^2.6.0"
+  },
+  "jest": {
+    "testFileExtensions": ["js", "jsx", "es6"],
+    "moduleFileExtensions": ["js", "jsx", "es6"],
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules",
+      "<rootDir>/src"
+    ]
   }
 }
