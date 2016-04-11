@@ -37,15 +37,15 @@ class DaumRoadViewDemo extends Component {
   handleMove = (reportedPosition) => {
     this.setState({ reportedPosition });
   }
-  onSetBaseMapType = (event) => {
+  handleSetBaseMapType = (event) => {
     const baseMapType = event.target.value;
     this.setState({ baseMapType });
   }
-  onZoomOut = () => {
+  handleZoomOut = () => {
     const zoomLevel = this.state.zoomLevel + 1;
     this.setState({ zoomLevel });
   }
-  onMovePositionUp = () => {
+  handleMovePositionUp = () => {
     const position = _.clone(this.state.position);
     position[0] = position[0] + 0.001;
     this.setState({ position });
@@ -59,7 +59,7 @@ class DaumRoadViewDemo extends Component {
                          position={this.state.position}
                          APIKey={APIKEY}
                          zoomLevel={this.state.zoomLevel}
-                         onMove={this.onMove}
+                         onMove={this.handleMove}
                          baseMapType={this.state.baseMapType}>
               <DaumMapOverlayOnMap lat={37.5668} lng={126.978}>
                 <h3> Map Bound Overlay! </h3>
@@ -73,10 +73,10 @@ class DaumRoadViewDemo extends Component {
         </Row>
         <Row>
           <Col md={12}>
-            <Button onClick={this.movePositionUp}> up! </Button>
-            <Button onClick={this.zoomOut}> Zoom Out! </Button>
-            <Button onClick={this.onAddChild}> add child! </Button>
-            <Input type="select" label="BaseMapType" onChange={this.onSetBaseMapType}>
+            <Button onClick={this.handleMovePositionUp}> up! </Button>
+            <Button onClick={this.handleZoomOut}> Zoom Out! </Button>
+            <Button onClick={this.handleAddChild}> add child! </Button>
+            <Input type="select" label="BaseMapType" onChange={this.handleSetBaseMapType}>
               <option value={DAUM_BASE_MAP_TYPES.ROADMAP}> ROADMAP </option>
               <option value={DAUM_BASE_MAP_TYPES.SKYVIEW}> SKYVIEW </option>
               <option value={DAUM_BASE_MAP_TYPES.HYBRID}> HYBRID </option>
