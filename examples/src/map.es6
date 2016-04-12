@@ -37,6 +37,9 @@ class DaumRoadViewDemo extends Component {
   handleMove = (reportedPosition) => {
     this.setState({ reportedPosition });
   }
+  handleZoomChange = (zoomLevel) => {
+    this.setState({ zoomLevel });
+  }
   handleSetBaseMapType = (event) => {
     const baseMapType = event.target.value;
     this.setState({ baseMapType });
@@ -60,6 +63,7 @@ class DaumRoadViewDemo extends Component {
                          APIKey={APIKEY}
                          zoomLevel={this.state.zoomLevel}
                          onMove={this.handleMove}
+                         onZoomChange={this.handleZoomChange}
                          baseMapType={this.state.baseMapType}>
               <DaumMapOverlayOnMap lat={37.5668} lng={126.978} centered>
                 <h3> Map Bound Overlay! </h3>

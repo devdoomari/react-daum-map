@@ -27,9 +27,7 @@ export default class DaumMap extends React.Component {
     this.initPromise = this.initDeferred.promise;
 
     this.state = {
-      map: null,
       options: {},
-      API: null,
       position: null,
       bounds: new Bounds({
         minLat: null,
@@ -54,7 +52,12 @@ export default class DaumMap extends React.Component {
       const daumMap = new daumAPI.Map(containerDiv, options);
 
       daumAPI.event.addListener(
-        daumMap, 'center_changed', this.onMove);
+        daumMap, 'center_changed', this.handleMove);
+      daumAPI.event.addListener(
+        daumMap, 'bounds_changed', this.handleBoundsChange);
+      daumAPI.event.addListener(
+        daumMap, 'zoom_changed', this.handleZoomChange);
+
       const position = daumMapCoordsToArrayCoords(daumMap.getCenter());
       const bounds = daumMapBoundsToMinMaxBounds(daumMap.getBounds());
 
@@ -102,13 +105,25 @@ export default class DaumMap extends React.Component {
       });
     }
   }
-  onMove = () => {
+  handleMove = () => {
+    console.log(`handleMove!!!`);
     const daumPosition = this.map.getCenter();
     const position = daumMapCoordsToArrayCoords(daumPosition);
     const bounds = daumMapBoundsToMinMaxBounds(
       this.map.getBounds());
     this.setState({ position, bounds });
     this.props.onMove(position);
+  }
+  handleZoomChange = () => {
+    console.log(`handleZoomChange!!!`);
+    const zoomLevel = this.map.getLevel();
+    this.props.onZoomChange(zoomLevel);
+  }
+  handleBoundsChange = () => {
+    console.log(`handleBoundsChange!!!`);
+    const bounds = daumMapBoundsToMinMaxBounds(
+      this.map.getBounds());
+    this.setState({ bounds });
   }
   render() {
     return (
@@ -170,4 +185,5 @@ DaumMap.defaultProps = {
   daumAPILoading: <h1> 다음 지도 API를 로드하는 중입니다. </h1>,
   daumAPILoadFailed: <h1> 다음 지도 API 로드를 실패하였습니다. </h1>,
   onMove: () => {},
+  onZoomChange: () => {},
 };
