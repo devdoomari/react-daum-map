@@ -114,7 +114,7 @@ export default class DaumMap extends React.Component {
     return (
       <div
         key="rootContainer"
-        style={{ ...this.props.style, position: 'relative' }}
+        style={{ ...this.props.style, position: 'relative', overflow: 'hidden' }}
       >
         <div
           key="container"

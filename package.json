@@ -55,6 +55,7 @@
     "eslint-plugin-jasmine": "^1.8.1",
     "eslint-plugin-react": "^4.3.0",
     "extract-text-webpack-plugin": "^0.9.1",
+    "file-loader": "^0.8.5",
     "flowcheck": "^0.2.7",
     "html-webpack-plugin": "^1.7.0",
     "jest-cli": "^0.10.0",
@@ -65,8 +66,16 @@
     "webpack-hot-middleware": "^2.6.0"
   },
   "jest": {
-    "testFileExtensions": ["js", "jsx", "es6"],
-    "moduleFileExtensions": ["js", "jsx", "es6"],
+    "testFileExtensions": [
+      "js",
+      "jsx",
+      "es6"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "es6"
+    ],
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules",
       "<rootDir>/src"

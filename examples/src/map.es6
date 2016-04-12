@@ -61,8 +61,14 @@ class DaumRoadViewDemo extends Component {
                          zoomLevel={this.state.zoomLevel}
                          onMove={this.handleMove}
                          baseMapType={this.state.baseMapType}>
-              <DaumMapOverlayOnMap lat={37.5668} lng={126.978}>
+              <DaumMapOverlayOnMap lat={37.5668} lng={126.978} centered>
                 <h3> Map Bound Overlay! </h3>
+              </DaumMapOverlayOnMap>
+              <DaumMapOverlayOnMap lat={37.5668} lng={126.978} centered>
+                <img src={require('./imgs/target.svg')} style={{ width: 50, height: 50 }} />
+              </DaumMapOverlayOnMap>
+              <DaumMapOverlayOnMap lat={37.5628} lng={126.978} centered>
+                <img src={require('./imgs/target.svg')} style={{ width: 50, height: 50 }} />
               </DaumMapOverlayOnMap>
               <DaumMapOverlayOnScreen top={200} left={200}>
                 <h3> Screen Bound Overlay! </h3>
@@ -82,6 +88,7 @@ class DaumRoadViewDemo extends Component {
               <option value={DAUM_BASE_MAP_TYPES.HYBRID}> HYBRID </option>
             </Input>
             <h1>{`${this.state.reportedPosition[0]} : ${this.state.reportedPosition[1]}`}</h1>
+            <h1>{`Zoom Level is: ${this.state.zoomLevel}`} </h1>
           </Col>
         </Row>
       </div>
