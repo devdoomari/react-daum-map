@@ -6,7 +6,6 @@ class DaumMapOverlayOnMap extends React.Component {
     this.setDimen();
   }
   setDimen = () => {
-    debugger;
     this.refs.outerBox.style.left = this.props.centered ? `${(0 - this.refs.outerBox.offsetWidth / 2)}px` : 0;
     this.refs.outerBox.style.top = this.props.centered ? `${(0 - this.refs.outerBox.offsetHeight / 2)}px` : 0;
   }

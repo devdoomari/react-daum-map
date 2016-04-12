@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  cloneElement,
+} from 'react';
 import OverlayOnMap from './on-map';
 import OverlayOnScreen from './on-screen';
 
@@ -26,6 +28,11 @@ export default class DaumMapOverlayContainer extends React.Component {
   }
   getPositionedChildren = (children, bounds, width, height) => (
     React.Children.map(children, (child) => {
+      const childCopy = cloneElement(
+        child, {
+          ...child.props,
+          redirectEventsToDaumMap: this.props.redirectEventsToDaumMap,
+        });
       if (child.type === OverlayOnMap) {
         const lat = child.props.lat;
         const lng = child.props.lng;
@@ -33,12 +40,16 @@ export default class DaumMapOverlayContainer extends React.Component {
           bounds: this.props.bounds,
           width, height, lat, lng,
         });
+
+        // debugger;
+        // child.props.mapContainer = this.props.mapContainer;
         return (
           <div
             key={child.key}
             style={{ position: 'absolute', top, left }}
           >
-            {child}
+            <p>OverlayOnMap</p>
+            {childCopy}
           </div>
         );
       } else if (child.type === OverlayOnScreen) {
@@ -49,7 +60,8 @@ export default class DaumMapOverlayContainer extends React.Component {
             key={child.key}
             style={{ position: 'absolute', top, left }}
           >
-            {child}
+            <p> OverlayOnScreen </p>
+            {childCopy}
           </div>
         );
       }

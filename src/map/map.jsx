@@ -125,6 +125,24 @@ export default class DaumMap extends React.Component {
       this.map.getBounds());
     this.setState({ bounds });
   }
+  redirectEventsToDaumMap = (childEvent) => {
+    const mapContainer = ReactDOM.findDOMNode(this.refs.containerDiv);
+    const eventAttributes = {};
+    for (let key in childEvent) {
+      eventAttributes[key] = childEvent[key];
+    }
+    const eventClone = new childEvent.constructor(childEvent.type, {
+      ...eventAttributes,
+      target: mapContainer
+    });
+    // if (childEvent.type === 'mousedown') {
+      debugger;
+    // }
+    // eventClone.target = mapContainer;
+  }
+  // testEvent = (event) => {
+  //   debugger;
+  // }
   render() {
     return (
       <div
@@ -139,6 +157,7 @@ export default class DaumMap extends React.Component {
             zIndex: 1,
           }}
           ref="containerDiv"
+          id="hello"
         />
         <div
           key="overlays"
@@ -152,6 +171,8 @@ export default class DaumMap extends React.Component {
             bounds={this.state.bounds}
             width={this.props.style.width}
             height={this.props.style.height}
+            mapContainer={this.refs.containerDiv}
+            redirectEventsToDaumMap={this.redirectEventsToDaumMap}
           >
             {this.props.children}
           </OverlayContainer>
