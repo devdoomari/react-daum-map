@@ -38,11 +38,11 @@
     "babel-preset-stage-0": "^6.3.13",
     "keymirror": "^0.1.1",
     "lodash": "^4.9.0",
-    "node-uuid": "^1.4.7",
     "postscribe": "^1.4.0",
     "q": "^1.4.1",
     "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react-dom": "^0.14.3",
+    "uuid": "^3.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.1.2",
